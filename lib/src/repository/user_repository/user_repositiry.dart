@@ -23,4 +23,17 @@ class UserRepositoyr extends GetxController {
           backgroundColor: Colors.red.withOpacity(0.1));
     }
   }
+
+  Future<UserModel> getUserDetails(String phoneNumber) async {
+    final sanpshot = await _db
+        .collection("Users")
+        .where("Phone", isEqualTo: phoneNumber)
+        .get();
+    return sanpshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+  }
+
+  Future<List<UserModel>> getAllUserDetails() async {
+    final sanpshot = await _db.collection("Users").get();
+    return sanpshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
+  }
 }
