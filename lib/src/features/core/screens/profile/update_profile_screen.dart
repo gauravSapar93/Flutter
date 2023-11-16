@@ -40,6 +40,15 @@ class UpdateProfileScreen extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
                         UserModel usermodel = snapshot.data as UserModel;
+                        final email =
+                            TextEditingController(text: usermodel.email);
+                        final password =
+                            TextEditingController(text: usermodel.password);
+                        final fullName =
+                            TextEditingController(text: usermodel.fullName);
+                        final phoneNo =
+                            TextEditingController(text: usermodel.phoneNo);
+
                         return Column(
                           children: [
                             Stack(
@@ -73,7 +82,7 @@ class UpdateProfileScreen extends StatelessWidget {
                                 child: Column(
                               children: [
                                 TextFormField(
-                                  initialValue: usermodel.fullName,
+                                  controller: fullName,
                                   decoration: InputDecoration(
                                     label: Text(tFullName),
                                     prefixIcon:
@@ -82,7 +91,7 @@ class UpdateProfileScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: tFormHeight - 20),
                                 TextFormField(
-                                  initialValue: usermodel.email,
+                                  controller: email,
                                   decoration: InputDecoration(
                                     label: Text(tEmail),
                                     prefixIcon: Icon(Icons.email),
@@ -90,7 +99,7 @@ class UpdateProfileScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: tFormHeight - 20),
                                 TextFormField(
-                                  initialValue: usermodel.phoneNo,
+                                  controller: phoneNo,
                                   decoration: InputDecoration(
                                     label: Text(tPhone),
                                     prefixIcon: Icon(Icons.phone),
@@ -98,7 +107,7 @@ class UpdateProfileScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: tFormHeight - 20),
                                 TextFormField(
-                                  initialValue: usermodel.password,
+                                  controller: password,
                                   decoration: InputDecoration(
                                     label: Text(tPassword),
                                     prefixIcon: Icon(Icons.fingerprint),
@@ -108,12 +117,14 @@ class UpdateProfileScreen extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateProfileScreen(),
-                                        ));
+                                      onPressed: () async {
+                                        UserModel userModel = UserModel(
+                                            fullName: fullName.text.toString(),
+                                            email: email.text.toString(),
+                                            phoneNo: phoneNo.text.toString(),
+                                            password: password.text.toString());
+                                        await controll
+                                            .updateUserDetails(userModel);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: tPrimaryColor,

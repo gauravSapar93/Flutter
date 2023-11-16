@@ -1,3 +1,4 @@
+import 'package:flutter_application/src/features/authentication/models/user_model.dart';
 import 'package:flutter_application/src/repository/auth_repository/auth_repository.dart';
 import 'package:flutter_application/src/repository/user_repository/user_repositiry.dart';
 import 'package:get/get.dart';
@@ -12,5 +13,9 @@ class ProfileController extends GetxController {
     if (phoneNumber != null) {
       return _userRepo.getUserDetails(phoneNumber);
     }
+  }
+
+  updateUserDetails(UserModel userModel) async {
+    await _userRepo.updateUserDetail(userModel);
   }
 }
