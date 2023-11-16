@@ -3,8 +3,10 @@ import 'package:flutter_application/src/features/authentication/screens/on_board
 import 'package:flutter_application/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:flutter_application/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:flutter_application/src/repository/auth_repository/exception/sign_up_email_passowrd_exception.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
@@ -17,6 +19,7 @@ class AuthRepository extends GetxController {
     print('onReady');
     firebaseUser = Rx<User?>(_auth.currentUser);
     firebaseUser.bindStream(_auth.userChanges());
+    FlutterNativeSplash.remove();
     ever(firebaseUser, (callback) => _setInitialScreen);
   }
 
@@ -97,5 +100,23 @@ class AuthRepository extends GetxController {
         PhoneAuthProvider.credential(
             verificationId: this.verficationId.value, smsCode: smsCode));
     return credential.user != null ? true : false;
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

@@ -46,6 +46,7 @@ dependencies:
   firebase_auth: ^4.13.0
   line_awesome_flutter: ^2.0.0
   cloud_firestore: ^4.13.1
+  google_sign_in: ^6.1.6
  
 dev_dependencies:
   flutter_test:

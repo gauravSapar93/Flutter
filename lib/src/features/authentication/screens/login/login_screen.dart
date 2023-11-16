@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/src/constants/image_strings.dart';
 import 'package:flutter_application/src/constants/sizes.dart';
 import 'package:flutter_application/src/constants/text_strings.dart';
+import 'package:flutter_application/src/features/authentication/controllers/login_screen_controller.dart';
 import 'package:flutter_application/src/features/authentication/screens/login/login_header_widget.dart';
 
 import 'login_form_widget.dart';
@@ -32,7 +33,9 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          LoginScreenController.instance.googleSignIn(context);
+                        },
                         icon: Image.network(
                           tGoogleLogo,
                           width: 20.0,
